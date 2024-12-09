@@ -1,2 +1,3 @@
 # Change-Point-Detection-PINNS
 Change Point Detection in Physics Informed Neural Network
+We aim to reproduce the paper CP-PINNs: Data-Driven Changepoints Detection in PDEs Using Online Optimized Physics-Informed Neural Networks (link: https://arxiv.org/abs/2208.08626). We use the architecture of Physics Informed Neural Network and the algorithm given in the paper to detect change points in the parameters of partial differential equations. We used Xavier initialization for the weights of the neural network and two different optimizers Adam and L-BFGS in sequence to minimize the loss function. The loss function comprised of MSE from the training data, the square of the residual from the PDE, and a regularizer for the parameters.
