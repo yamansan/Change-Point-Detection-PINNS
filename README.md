@@ -30,162 +30,104 @@ Our implementation follows the core components of the CP-PINNs framework:
 - Uses state-of-the-art optimization techniques for improved training.
 
 
-# Change Point - Physics Informed Neural Networks (CP-PINNs)
 
-This repository contains a LaTeX-based presentation titled **Change Point - Physics Informed Neural Networks (CP-PINNs)**. The slides cover the use of CP-PINNs to estimate change points and time-dependent parameters in the advection-diffusion equation.
 
-## Contents
 
-1. [Title and Overview](#title-and-overview)
-2. [Recap](#recap)
-3. [Goal](#goal)
-4. [Training Data](#training-data)
-5. [Loss Function for CP-PINN](#loss-function-for-cp-pinn)
-6. [Training Algorithm for CP-PINNs](#training-algorithm-for-cp-pinns)
-7. [Using Ordinary PINNs for Pre-Training](#using-ordinary-pinns-for-pre-training)
-8. [Training the Model with Pre-Trained Parameters](#training-the-model-with-pre-trained-parameters)
-9. [Final Results](#final-results)
-10. [Summary and Next Steps](#summary-and-next-steps)
+# Change Point Detection Using Physics-Informed Neural Networks (CP-PINNs)
 
----
+## Overview
+This repository contains the LaTeX code for a presentation on **Change Point Detection from Physics-Informed Neural Networks (CP-PINNs)**. The presentation demonstrates the use of neural networks for detecting change points in the context of solving partial differential equations (PDEs). Specifically, it explores the advection-diffusion equation with time-dependent coefficients.
 
-## Title and Overview
+### Key Highlights
+- **Advection-Diffusion Equation**: 
+  $$\frac{\partial u(x,t)}{\partial t} + \frac{\partial u(x,t)}{\partial x} = \lambda(t) \frac{\partial^2 u(x,t)}{\partial x^2}$$
+  where the parameter $\lambda(t)$ changes over time, introducing change points.
 
-### Slide: Title Page
+- **Goals**:
+  - Estimate $\lambda(t)$ and identify the associated change points.
+  - Use CP-PINNs to perform better than traditional PINNs in scenarios involving drastic parameter changes.
 
-The presentation introduces CP-PINNs, a neural network-based framework for solving PDEs with time-dependent parameters and detecting change points.
+- **Loss Function**:
+  - Residual of the PDE.
+  - Training data and boundary conditions.
+  - Regularization term for $\lambda(t)$ using total variation regularization.
 
----
+- **Training Algorithms**:
+  - Pre-training with ordinary PINNs for better initialization.
+  - Gradient-based optimization with dynamically updated loss weights.
 
-## Recap
+## Presentation Structure
+The presentation is organized as follows:
 
-### Slide: Recap
+1. **Recap**
+    - Overview of neural networks and their capability to solve PDEs.
 
-- Neural networks can approximate almost all practically useful functions (Universal Approximation Theorem).
-- They can also approximate solutions to partial differential equations (PDEs).
+2. **Goal**
+    - Introduction to the advection-diffusion equation and change-point detection problem.
 
----
+3. **Training Data**
+    - Numerical solutions used for generating training data.
 
-## Goal
+4. **Loss Function**
+    - Explanation of the loss terms used in CP-PINNs.
 
-### Slide: Goal
+5. **Training Algorithm**
+    - Derivation and explanation of the training process, including dynamic weight updates.
 
-- Solve the advection-diffusion equation:
+6. **Pre-Training**
+    - Use of ordinary PINNs for parameter initialization.
 
-  \[\frac{\partial u(x,t)}{\partial t} + \frac{\partial u(x,t)}{\partial x} = \lambda(t) \frac{\partial^2 u(x,t)}{\partial x^2}\]
+7. **Final Results**
+    - Performance metrics and visualization of results.
 
-  where:
+8. **Summary and Next Steps**
+    - Key takeaways and potential future applications.
 
-  \[\lambda(t) = \begin{cases} 
-  0.5 & \text{for } t \in [0, \frac{1}{3}), \\
-  0.05 & \text{for } t \in [\frac{1}{3}, \frac{2}{3}), \\
-  1.0 & \text{for } t \in [\frac{2}{3}, 1).
-  \end{cases}\]
+## Results
+- **Change Points**: $t_1 = 0.33 \pm 0.01$, $t_2 = 0.66 \pm 0.01$.
+- **Estimated Parameters**:
+  - $\lambda_1 = 0.5 \pm 0.0017$.
+  - $\lambda_2 = 0.05 \pm 0.0011$.
+  - $\lambda_3 = 1.0 \pm 0.0007$.
 
-- Estimate \( \lambda(t) \) and change points \( t_1, t_2 \).
+## Applications
+- Detecting change points in physical systems governed by PDEs.
+- Quantitative finance: Identifying points of high volatility.
+- Other domains requiring parameter estimation in time-dependent PDEs.
 
----
+## Files
+- **`presentation.tex`**: Main LaTeX source code for the presentation.
+- **Figures**:
+  - `Numerical_Solution.png`: Numerical solution of the advection-diffusion equation.
+  - `Training Data.png`: Training data visualization.
+  - `Lambda_plot.png`: Estimated $\lambda(t)$ after CP-PINN training.
+  - `Absolute Difference.png`: Absolute error between training data and the neural network solution.
 
-## Training Data
+## Getting Started
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/CP-PINNs.git
+   ```
+2. Navigate to the repository:
+   ```bash
+   cd CP-PINNs
+   ```
+3. Compile the LaTeX code:
+   ```bash
+   pdflatex presentation.tex
+   ```
+   Ensure you have all required LaTeX packages installed.
 
-### Slide: Numerical Solution
+## References
+- Physics-Informed Neural Networks: [Raissi et al., 2019](https://www.sciencedirect.com/science/article/abs/pii/S0021999118307125).
+- Applications in PDEs and change-point detection.
 
-Numerical solution to the advection-diffusion equation:
-
-![Numerical Solution](images/Numerical_Solution.png)
-
-### Slide: Training Data
-
-Data points chosen from the numerical solution:
-
-![Training Data](images/Training_Data.png)
-
----
-
-## Loss Function for CP-PINN
-
-### Slide: Loss Function
-
-The total loss function includes three terms:
-
-1. Residual of the PDE:
-   \[L^{NN} = \sum_{i,j} \left( \frac{\partial u_{NN}}{\partial t} + \frac{\partial u_{NN}}{\partial x} - \lambda_{NN} \frac{\partial^2 u_{NN}}{\partial x^2} \right)^2 \]
-
-2. Training data and boundary conditions:
-   \[L^{Training} = \sum_{i,j} \left( u_{NN} - u_{train} \right)^2 \]
-
-3. Regularization term for \( \lambda(t) \):
-   \[V^{\mathfrak{\lambda}} = \sum_{i=1}^{T-1} \delta(t^i)\left|\Delta{\lambda}(t^i)\right|\]
-
----
-
-## Training Algorithm for CP-PINNs
-
-### Slide: Training Algorithm
-
-- The total cost function:
-
-  \[L(\mathbf{w};\boldsymbol{\Theta},\lambda(t)) = w_1 L^{NN}+ w_2 L^{Training}+ w_3 V^{\mathfrak{\lambda}}\]
-
-- Update weights \( \mathbf{w} \) for each batch:
-
-  \[\left[ 
-  \begin{array}{c} 
-  w_1^{(k)} \\
-  w_2^{(k)} \\
-  w_3^{(k)}
-  \end{array} 
-  \right] = \left[ 
-  \begin{array}{c} 
-  \exp\left[-\eta  L^{NN}_{(k-1)} - \left( 1-\eta\gamma\right)\right] \\
-  \exp\left[-\eta L^{Training}_{(k-1)} - \left( 1-\eta\gamma\right)\right]\\
-  \exp\left[-\eta V^{\mathfrak{{\hat{\lambda}}}}_{(k-1)} - \left( 1-\eta\gamma\right)\right]
-  \end{array} 
-  \right]\]
+## License
+This repository is licensed under the MIT License. See `LICENSE` for more details.
 
 ---
+Feel free to contribute by opening issues or submitting pull requests!
 
-## Using Ordinary PINNs for Pre-Training
-
-### Slide: Linear Regression Estimate
-
-Estimate \( \lambda(t) \) and change points using linear regression:
-
-![Lambda Plot Linear Regression](images/Lambda_plot_linear_regression.png)
-
----
-
-## Training the Model with Pre-Trained Parameters
-
-### Slide: CP-PINN Training
-
-Using CP-PINN training:
-
-![Lambda Plot](images/Lambda_plot.png)
-
-### Slide: Absolute Difference
-
-Absolute error between training data and neural network solution:
-
-![Absolute Difference](images/Absolute_Difference.png)
-
----
-
-## Final Results
-
-### Slide: Results
-
-- Change points: \( t_1 = 0.33 \pm 0.01 \), \( t_2 = 0.66 \pm 0.01 \).
-- Values of \( \lambda \):
-  - \( \lambda_1 = 0.5 \pm 0.0017 \)
-  - \( \lambda_2 = 0.05 \pm 0.0011 \)
-  - \( \lambda_3 = 1.0 \pm 0.0007 \)
-
----
-
-## Summary and Next Steps
-
-### Slide: Summary
 
 - CP-PINNs excel in solving PDEs with time-dependent parameters and detecting change points.
 - Applications include quantitative finance, e.g., estimating high-volatility points.
