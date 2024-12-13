@@ -2,6 +2,9 @@
 
 This repository implements the methodology described in the paper [**CP-PINNs: Data-Driven Changepoints Detection in PDEs Using Online Optimized Physics-Informed Neural Networks**](https://arxiv.org/abs/2208.08626). The goal is to detect changepoints in the parameters of partial differential equations (PDEs) using the architecture and algorithm of Physics-Informed Neural Networks (PINNs).
 
+Files:
+- final.ipynb contains the code.
+- tanh_pinn_model_training_data9.pth contains the parameters for the pre-trained model from the training data.
 ## Features
 
 - Detects changepoints in PDE parameters effectively.
