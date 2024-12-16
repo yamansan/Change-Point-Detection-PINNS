@@ -5,6 +5,7 @@ This repository implements the methodology described in the paper [**CP-PINNs: D
 Files:
 - final.ipynb contains the code.
 - tanh_pinn_model_training_data9.pth contains the parameters for the pre-trained model from the training data.
+- A full detailed presentation is given in CP-PINN.pdf
 ## Features
 
 - Detects changepoints in PDE parameters effectively.
